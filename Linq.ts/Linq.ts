@@ -366,22 +366,12 @@
     }
 
     ToObject(property: Selector<TSource, string>, element?: Selector<TSource, any>): Object {
+        var item: any;
+        var items: TSource[] = this.ToArray();
         var result: Object = {};
-        var item: ILinqIteratorResult<TSource> = this.iterator.next();
-        var key: string;
-        var value: any;
 
-        if (element == null) {
-            element = (item: TSource) => item;
-        }
-
-        while (!item.done) {
-            key = property(item.value);
-            value = element(item.value);
-
-            result[key] = value;
-
-            item = this.iterator.next();
+        for (item in items) {
+            result[property(item)] = item;
         }
 
         return result;
